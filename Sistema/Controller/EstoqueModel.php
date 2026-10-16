@@ -9,7 +9,7 @@ class ProdutoController {
     }
     public function listar() {
         $produtos = $this->produtoModel->buscarTodos();
-        include_once "C:/xampp/htdocs/mvc/View/Produto/listar.php";
+        include_once  __DIR__ . "/Sistema/View/Produto/listar.php";
         return;
     }
 

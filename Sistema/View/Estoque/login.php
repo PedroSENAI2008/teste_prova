@@ -39,7 +39,7 @@ function logar ($email, $senha) {
         exit();
     } else {
         // Login falhou
-        echo "Email ou senha inválidos.";
+        echo "Email ou senha inválidos. <a href='login.php'>Tente novamente</a>";
     }
     }
 }

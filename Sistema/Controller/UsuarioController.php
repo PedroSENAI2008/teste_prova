@@ -9,7 +9,7 @@ class UsuarioController {
     }
     public function listar() {
         $usuarios = $this->usuarioModel->buscarTodos();
-        include_once "C:/xampp/htdocs/mvc/View/Usuario/listar.php";
+        include_once  __DIR__ . "/Sistema/View/Usuario/listar.php";
         return;
     }
 
