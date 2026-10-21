@@ -36,14 +36,5 @@ class ProdutoModel {
         return $stmt->execute([$id]);
     }
 
-    public function Login($email, $senha) {
-        $sql = "SELECT * FROM produtos WHERE email = :email AND senha = :senha";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':email' => $email,
-            ':senha' => $senha
-        ]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
     
 }

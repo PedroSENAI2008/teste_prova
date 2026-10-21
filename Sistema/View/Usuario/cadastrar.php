@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ ."/../../DB/Database.php";
+require_once __DIR__ ."/../../Controller/UsuarioController.php";
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -23,8 +27,7 @@
 
 <?php
 
-require_once "C:/xampp/htdocs/mvc/DB/Database.php";
-require_once "C:/xampp/htdocs/mvc/Controller/UsuarioController.php";
+
 
 $UsuarioController = new UsuarioController($pdo);
 
@@ -34,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $senha = $_POST['senha'];
 
     $UsuarioController->cadastrar($nome, $email, $senha);
-    header('Location: ../../index.php');
+    header('Location: /teste_prova/Sistema/index.php');
 }
 
 

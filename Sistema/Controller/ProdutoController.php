@@ -1,5 +1,5 @@
 <?php
-require_once "C:/xampp/htdocs/mvc/Model/ProdutoModel.php";
+require_once __DIR__ ."../Model/ProdutoModel.php";
 class ProdutoController {
     private $produtoModel;
    

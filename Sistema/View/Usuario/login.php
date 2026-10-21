@@ -1,4 +1,27 @@
+<?php
+session_start();
 
+require_once __DIR__ . "/../../DB/Database.php";
+require_once __DIR__ . "/../../Controller/UsuarioController.php";
+
+$usuarioController = new UsuarioController($pdo);
+$erro = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
+    $senha = $_POST["senha"];
+
+    $usuario = $usuarioController->login($email, $senha);
+    if ($usuario) {
+        session_start();
+        $_SESSION['usuario'] = $usuario;
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    $erro = "Email ou senha inválidos.";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,32 +38,10 @@
         <input type="password" name="senha" id="senha" required>
         <br>
         <button type="submit">Login</button>
+        <?php if ($erro !== ""): ?>
+            <p style="color: red;"><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
+    </form>
 </body>
 
 </html>
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $email = $_POST["email"];
-    $senha = $_POST["senha"];
-
-    logar($email, $senha);
-
-function logar ($email, $senha) {
-    
-    $usuario = $this->usuarioModel->Login($email, $senha);
-    return $usuario;
-
-    if ($usuario) {
-        // Login bem-sucedido
-        session_start();
-        $_SESSION['usuario'] = $usuario;
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        // Login falhou
-        echo "Email ou senha inválidos. <a href='login.php'>Tente novamente</a>";
-    }
-    }
-}
-?>

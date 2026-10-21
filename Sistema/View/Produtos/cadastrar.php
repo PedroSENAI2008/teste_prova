@@ -10,11 +10,11 @@
        <label for="nome">Nome:</label>
        <input type="text" name="nome" required><br> 
        
-       <label for="email">Email:</label>
-       <input type="email" name="email" required><br> 
+       <label for="descricao">Descrição:</label>
+       <input type="text" name="descricao" required><br> 
        
-       <label for="senha">Senha:</label>
-       <input type="password" name="senha" required><br> 
+       <label for="valor">Valor:</label>
+       <input type="number" name="valor" step="0.01" required><br> 
 
        <input type="submit">
     </form>

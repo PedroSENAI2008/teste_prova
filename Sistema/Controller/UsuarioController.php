@@ -1,9 +1,10 @@
 <?php
-require_once "C:/xampp/htdocs/mvc/Model/UsuarioModel.php";
+require_once __DIR__ ."/../Model/UsuarioModel.php";
 class UsuarioController {
     private $usuarioModel;
    
-    public function __construct($pdo) {
+    public function __construct($pdo){
+
         $this->usuarioModel = new UsuarioModel($pdo);
 
     }
@@ -18,13 +19,21 @@ class UsuarioController {
         return $usuario;
     }
 
+    public function buscarporEmail($email){
+        $usuario = $this->usuarioModel->buscarporEmail($email);
+        return $usuario;
+    }
     public function cadastrar($nome, $email, $senha){
         $this->usuarioModel->cadastrar($nome, $email, $senha);
     }
 
     public function login($email, $senha){
-        $usuario = $this->usuarioModel->Login($email, $senha);
-        return $usuario;
+        $usuario = $this->usuarioModel->buscarporEmail($email);
+        if ($usuario && password_verify ($senha, $usuario['senha'])){//mei q descriptografa
+        unset($usuario['senha']);//deixa de guardar senha
+        return $usuario;} 
+    return false;
+
     }
     
     public function editar($nome,$email, $senha, $id){

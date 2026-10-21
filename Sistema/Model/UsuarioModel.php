@@ -15,13 +15,18 @@ class UsuarioModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function cadastrar($nome, $email, $senha) {
+    public function buscarporEmail($email){
+        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function cadastrar($nome, $email, $senha){
         $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':nome' => $nome,
             ':email' => $email,
-            ':senha' => $senha
+            ':senha' =>  password_hash($senha, PASSWORD_DEFAULT)
         ]);
     }
     public function editar($nome, $email, $senha, $id) {
