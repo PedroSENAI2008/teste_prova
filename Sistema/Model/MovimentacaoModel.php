@@ -8,8 +8,8 @@ class MovimentacaoModel {
     public function buscarTodos(){
         $sql = "SELECT estoques.*, produtos.nome AS produto_nome, usuarios.nome AS usuario_nome
                 FROM estoques
-                INNER JOIN produtos ON estoques.produto_id = produtos.id
-                INNER JOIN usuarios ON estoques.usuario_id = usuarios.id";
+                INNER JOIN produtos ON estoques.id_produto = produtos.id
+                INNER JOIN usuarios ON estoques.id_usuario = usuarios.id";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -17,8 +17,8 @@ class MovimentacaoModel {
     public function buscarestoque($id){
         $sql = "SELECT estoques.*, produtos.nome AS produto_nome, usuarios.nome AS usuario_nome
                 FROM estoques
-                INNER JOIN produtos ON estoques.produto_id = produtos.id
-                INNER JOIN usuarios ON estoques.usuario_id = usuarios.id
+                INNER JOIN produtos ON estoques.id_produto = produtos.id
+                INNER JOIN usuarios ON estoques.id_usuario = usuarios.id
                 WHERE estoques.id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);

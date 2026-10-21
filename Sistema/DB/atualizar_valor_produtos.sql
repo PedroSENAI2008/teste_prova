@@ -1,0 +1,2 @@
+ALTER TABLE produtos
+    MODIFY valor DECIMAL(10,2) NOT NULL;

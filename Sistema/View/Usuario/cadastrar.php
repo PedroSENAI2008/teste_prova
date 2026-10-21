@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $senha = $_POST['senha'];
 
     $UsuarioController->cadastrar($nome, $email, $senha);
-    header('Location: /teste_prova/Sistema/index.php');
+    header('Location: /teste_saep/Sistema/index.php');
 }
 
 

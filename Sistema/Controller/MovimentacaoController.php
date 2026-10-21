@@ -9,7 +9,7 @@ class MovimentacaoController {
     }
     public function listar() {
         $estoques = $this->movimentacaoModel->buscarTodos();
-        include_once  __DIR__ . "/Sistema/View/Estoque/listar.php";
+        include_once __DIR__ . "/../View/Estoque/listar.php";
         return;
     }
 
@@ -35,7 +35,6 @@ class MovimentacaoController {
     }
 
 }
-
 
 
 

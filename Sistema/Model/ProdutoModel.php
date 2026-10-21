@@ -1,40 +1,76 @@
 <?php
 class ProdutoModel {
     private $pdo;
-    public function __construct(PDO $pdo){
+
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-    public function buscarTodos(){
-        $stmt = $this->pdo->query("SELECT * FROM produtos");
+    public function buscarTodos() {
+        $stmt = $this->pdo->query("SELECT * FROM produtos ORDER BY nome");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function buscarProduto($id){
-        $stmt = $this->pdo->query("SELECT * FROM produtos WHERE id = $id");
+
+    public function buscarProduto($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM produtos WHERE id = :id");
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function cadastrar($nome, $email, $senha) {
-        $sql = "INSERT INTO produtos (nome, email, senha) VALUES (:nome, :email, :senha)";
+    public function cadastrar($nome, $descricao, $valor, $quantidade) {
+        $sql = "INSERT INTO produtos (nome, descricao, valor, quantidade)
+                VALUES (:nome, :descricao, :valor, :quantidade)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':nome' => $nome,
-            ':email' => $email,
-            ':senha' => $senha
+            ':descricao' => $descricao,
+            ':valor' => $valor,
+            ':quantidade' => $quantidade
         ]);
     }
-    public function editar($nome, $email, $senha, $id) {
-        $sql = "UPDATE produtos SET nome=?, email=?, senha=? WHERE id = ?";
+
+    public function editar($nome, $descricao, $valor, $quantidade, $id) {
+        $sql = "UPDATE produtos
+                SET nome = :nome, descricao = :descricao, valor = :valor, quantidade = :quantidade
+                WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$nome, $email, $senha, $id]);
+        return $stmt->execute([
+            ':nome' => $nome,
+            ':descricao' => $descricao,
+            ':valor' => $valor,
+            ':quantidade' => $quantidade,
+            ':id' => $id
+        ]);
     }
 
     public function deletar($id) {
-        $sql = "DELETE FROM produtos WHERE id = ?";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$id]);
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM estoques WHERE id_produto = :id");
+        $stmt->execute([':id' => $id]);
+        if ((int) $stmt->fetchColumn() > 0) {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare("DELETE FROM produtos WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $stmt->rowCount() === 1;
     }
 
-    
+    public function ajustarEstoque($id, $tipo, $quantidade) {
+        if ($tipo === 'entrada') {
+            $sql = "UPDATE produtos
+                    SET quantidade = quantidade + :quantidade
+                    WHERE id = :id";
+        } else {
+            $sql = "UPDATE produtos
+                    SET quantidade = quantidade - :quantidade
+                    WHERE id = :id AND quantidade >= :quantidade";
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':quantidade' => $quantidade,
+            ':id' => $id
+        ]);
+        return $stmt->rowCount() === 1;
+    }
 }

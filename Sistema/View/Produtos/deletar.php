@@ -1,15 +1,24 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header('Location: ../Usuario/login.php');
+    exit();
+}
 
 require_once __DIR__ . "/../../DB/Database.php";
-require_once __DIR__ . "/../../Controller/UsuarioController.php";
+require_once __DIR__ . "/../../Controller/ProdutoController.php";
 
-$UsuarioController = new UsuarioController($pdo);
-
-if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $usuario = $UsuarioController->deletar($id);
-    header('Location: ../../index.php');
-} else {
-    header('Location: ../../index.php');
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+if (!$id || $id < 1) {
+    header('Location: ../Usuario/dashboard.php?produto=nao-encontrado');
+    exit();
 }
-?>
+
+$produtoController = new ProdutoController($pdo);
+if (!$produtoController->deletar($id)) {
+    header('Location: ../Usuario/dashboard.php?produto=em-uso');
+    exit();
+}
+
+header('Location: ../Usuario/dashboard.php?produto=excluido');
+exit();

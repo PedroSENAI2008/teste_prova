@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $usuario = $usuarioController->login($email, $senha);
     if ($usuario) {
-        session_start();
         $_SESSION['usuario'] = $usuario;
         header("Location: dashboard.php");
         exit();
