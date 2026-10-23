@@ -39,6 +39,7 @@ $status = $_GET['estoque'] ?? ($_GET['produto'] ?? '');
     <title>Painel de estoque</title>
 </head>
 <body>
+    
     <h1>Olá, <?= htmlspecialchars($_SESSION['usuario']['nome'], ENT_QUOTES, 'UTF-8') ?>!</h1>
     <p><a href="../Produtos/cadastrar.php">Cadastrar produto</a></p>
 
